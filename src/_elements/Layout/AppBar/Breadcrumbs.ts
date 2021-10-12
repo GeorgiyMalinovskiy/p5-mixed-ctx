@@ -17,7 +17,12 @@ class Breadcrumbs extends ElementComponent {
     );
   }
   draw(...args: number[]) {
-    const [padding, animationOffset, elapsed] = args;
+    const [
+      padding,
+      animationOffset,
+      xLength,
+      elapsed,
+    ] = args;
     const {
       p,
       gpContext: { '2d': gp },
@@ -35,6 +40,13 @@ class Breadcrumbs extends ElementComponent {
           break;
         default: syOffset = padding;
       }
+
+      let yOffset = padding * 2;
+      if (elapsed > animationOffset - 1000) {
+        yOffset = p.map(animationOffset - elapsed, 0, 1000, padding * 2, padding, true);
+        gp.line(padding, yOffset, xLength, yOffset);
+      }
+
 
       gp.push();
       gp.imageMode(gp.CENTER);

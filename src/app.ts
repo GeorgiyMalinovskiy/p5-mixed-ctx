@@ -10,7 +10,7 @@ let unlisten = [];
 
 export default (p: P5) => {
   let font: P5.Font;
-  let textGrf: P5.Graphics;
+  let textGp: P5.Graphics;
 
   let bgImg: P5.Image;
   let warpShader: P5.Shader;
@@ -20,7 +20,7 @@ export default (p: P5) => {
     logoImg = p.loadImage('./assets/logo-c.svg');
 
     font = p.loadFont('./assets/AltmannGrotesk-Regular.otf');
-    textGrf = p.createGraphics(300, 100)
+    textGp = p.createGraphics(300, 100)
 
     warpShader = p.loadShader( './assets/shader.vert', './assets/shader.frag');
   };

@@ -28,11 +28,26 @@ class Navigation extends ElementComponent {
     };
   }
   draw(...args: number[]) {
-    const [padding, animationOffset, elapsed, ] = args;
-    const { gpContext: gp } = this;
+    const [
+      padding,
+      animationOffset,
+      xLength,
+      elapsed,
+    ] = args;
+    const { p, gpContext } = this;
+    const { ['2d']: gp } = gpContext;
+
+    let yOffset =  gp.height - padding * 2;
+    if (elapsed > animationOffset - 1000) {
+      yOffset = p.map(animationOffset - elapsed, 0, 1000, padding * 2, padding, true);
+      gp.line(padding, gp.height - yOffset, xLength, gp.height - yOffset);
+    }
+  
     Object.values(domains).forEach((Component, i) => {
-      // const pathname = generatePath(Component.path);
-      if ('drawButton' in Component) Component.drawButton(gp);
+      const pathname = generatePath(Component.path);
+      if ('drawButton' in Component) {
+        Component.drawButton(gpContext);
+      }
     });
   }
 }
