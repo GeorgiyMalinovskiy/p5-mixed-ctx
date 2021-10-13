@@ -18,7 +18,7 @@ export interface Page {
 
 export interface PageStatic {
   new(p: P5, gpContext: GpContext, history: BrowserHistory): Page;
-  drawButton?(gpContext: GpContext): void;
+  drawButton?(): P5.Graphics;
   label: string;
   path: string;
 }

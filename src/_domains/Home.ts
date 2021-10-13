@@ -1,13 +1,15 @@
-import { Page, PageComponent, implementsPage } from './_utils';
+import type P5 from 'p5';
+import { PageComponent, implementsPage } from './_utils';
 
 @implementsPage()
 class Home extends PageComponent {
   public static label = 'Home';
   public static path = '/';
-  public static drawButton({ ['2d']: gp }: Page['gpContext']) {
-    gp.stroke(255);
-    gp.strokeWeight(2);
-    gp.line(10, 10, 10, 10);
+  public static drawButton(this: P5.Graphics) {
+    this.noStroke();
+    this.fill(255);
+    this.rect(0, 0, this.width, this.height);
+    return this;
   }
   constructor(...args: ConstructorParameters<typeof PageComponent>) {
     super(...args);
