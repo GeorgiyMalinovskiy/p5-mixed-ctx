@@ -17,9 +17,12 @@ class Navigation extends ElementComponent {
     const { elementSize } = Navigation;
     this.elements = Object.values(domains).reduce((acc, Component) => {
       const gp = p.createGraphics(elementSize, elementSize);
+      // gp.id(`canvasButton${Component.label}`);
       const pathname = generatePath(Component.path);
+      gp.mouseClicked(() => { this.getNavFxn(pathname); });
 
       Component.drawButton = Component.drawButton.bind(gp);
+      
       acc.push(Component);
       return acc;
     }, []);
