@@ -8,14 +8,14 @@ class Cursor extends ElementComponent {
     this.size = 10;
   }
   draw() {
-    const { p, gpContext, size } = this;
+    const { p, gpContext: { gp2d }, size } = this;
     
-    gpContext['2d'].fill(255);
-    gpContext['2d'].beginShape();
-    gpContext['2d'].vertex(p.mouseX, p.mouseY - size / 2);
-    gpContext['2d'].vertex(p.mouseX + size, p.mouseY + size);
-    gpContext['2d'].vertex(p.mouseX - size, p.mouseY + size);
-    gpContext['2d'].endShape(gpContext['2d'].CLOSE);
+    gp2d.fill(255);
+    gp2d.beginShape();
+    gp2d.vertex(p.mouseX, p.mouseY - size / 2);
+    gp2d.vertex(p.mouseX + size, p.mouseY + size);
+    gp2d.vertex(p.mouseX - size, p.mouseY + size);
+    gp2d.endShape(gp2d.CLOSE);
   }
 }
 

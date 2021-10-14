@@ -1,6 +1,7 @@
 import type P5 from 'p5';
 
 import { ElementComponent, implementsElement } from '../../_utils';
+import { PADDING, ANIMATION_OFFSET } from './constants';
 
 @implementsElement()
 class Breadcrumbs extends ElementComponent {
@@ -9,57 +10,48 @@ class Breadcrumbs extends ElementComponent {
 
   constructor(...args: ConstructorParameters<typeof ElementComponent>) {
     super(...args);
-    const [p, { '2d': gp }] = args;
+    const [p, { gp2d }] = args;
 
-    gp.loadImage(
+    gp2d.loadImage(
       '../assets/title.svg',
       image => { this.textSVG = image; },
     );
   }
-  draw(...args: number[]) {
-    const [
-      padding,
-      animationOffset,
-      xLength,
-      elapsed,
-    ] = args;
-    const {
-      p,
-      gpContext: { '2d': gp },
-      textSVG,
-    } = this;
+  draw(xLength: number) {
+    const { p, gpContext: { gp2d }, textSVG } = this;
+    const elapsed = p.millis();
 
     if (!!textSVG || (Array.isArray(textSVG) && textSVG.length)) {
       let syOffset;
       switch (true) {
-        case elapsed > animationOffset - 1000:
-          syOffset = p.map(animationOffset - elapsed, 1000, 0, padding, 0, true)
+        case elapsed > ANIMATION_OFFSET - 1000:
+          syOffset = p.map(ANIMATION_OFFSET - elapsed, 1000, 0, PADDING, 0, true)
           break;
-        case elapsed > animationOffset:
+        case elapsed > ANIMATION_OFFSET:
           syOffset = 0;
           break;
-        default: syOffset = padding;
+        default: syOffset = PADDING;
       }
 
-      let yOffset = padding * 2;
-      if (elapsed > animationOffset - 1000) {
-        yOffset = p.map(animationOffset - elapsed, 0, 1000, padding * 2, padding, true);
-        gp.line(padding, yOffset, xLength, yOffset);
+      let yOffset = PADDING * 2;
+      if (elapsed > ANIMATION_OFFSET - 1000) {
+        yOffset = p.map(ANIMATION_OFFSET - elapsed, 0, 1000, PADDING * 2, PADDING, true);
+        gp2d.line(PADDING, yOffset, xLength, yOffset);
       }
 
 
-      gp.push();
-      gp.imageMode(gp.CENTER);
-      gp.image(
+      gp2d.push();
+      gp2d.imageMode(gp2d.CENTER);
+      gp2d.image(
         textSVG,
-        gp.width / 2,
-        padding + padding / 2,
+        gp2d.width / 2,
+        PADDING + PADDING / 2,
         Breadcrumbs.textHeight / (textSVG.height / textSVG.width),
         Breadcrumbs.textHeight,
         0,
         syOffset,
       );
-      gp.pop();
+      gp2d.pop();
     }
   }
 }

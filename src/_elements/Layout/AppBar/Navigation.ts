@@ -1,11 +1,10 @@
-import type P5 from 'p5';
-
 import * as domains from '../../../_domains';
 import { PageStatic } from '../../../_domains/_utils';
 import generatePath from '../../../router/generatePath';
 
 import { ElementComponent, implementsElement } from '../../_utils';
-import { getOr } from 'lodash/fp';
+
+import { PADDING, ANIMATION_OFFSET } from './constants';
 
 @implementsElement()
 class Navigation extends ElementComponent {
@@ -13,54 +12,47 @@ class Navigation extends ElementComponent {
   elements: PageStatic[];
   constructor(...args: ConstructorParameters<typeof ElementComponent>) {
     super(...args);
-    const [p] = args;
+
+    const [p, { gp2d }] = args;
     const { elementSize } = Navigation;
-    this.elements = Object.values(domains).reduce((acc, Component) => {
+    this.elements = Object.values(domains).reduce((acc, Component, i, arr) => {
       const gp = p.createGraphics(elementSize, elementSize);
-      // gp.id(`canvasButton${Component.label}`);
+      gp.show();
+      gp.style(`
+      position: absolute;
+      bottom: ${PADDING + ((PADDING - elementSize) / 2)}px;
+      left: ${(100 / (arr.length + 1)) * (i + 1)}%;
+      margin-left: -${elementSize / 2}px;
+      `);
+
       const pathname = generatePath(Component.path);
       gp.mouseClicked(() => { this.getNavFxn(pathname); });
 
       Component.drawButton = Component.drawButton.bind(gp);
-      
       acc.push(Component);
+
       return acc;
     }, []);
   }
   getNavFxn(pathname: string) {
     this.history.push(pathname);
   }
-  draw(...args: number[]) {
-    const [
-      padding,
-      animationOffset,
-      xLength,
-      elapsed,
-    ] = args;
-    const { p, gpContext, elements } = this;
-    const { ['2d']: gp } = gpContext;
+  draw(xLength: number) {
+    const { p, gpContext: { gp2d }, elements } = this;
+    const elapsed = p.millis();
 
     // horizontal frame
-    let yOffset =  gp.height - padding * 2;
-    if (elapsed > animationOffset - 1000) {
-      yOffset = gp.height - p.map(animationOffset - elapsed, 0, 1000, padding * 2, padding, true);
-      gp.line(padding, yOffset, xLength, yOffset);
+    let yOffset =  gp2d.height - PADDING * 2;
+    if (elapsed > ANIMATION_OFFSET - 1000) {
+      yOffset = gp2d.height - p.map(ANIMATION_OFFSET - elapsed, 0, 1000, PADDING * 2, PADDING, true);
+      gp2d.line(PADDING, yOffset, xLength, yOffset);
     }
   
     // buttons
-    if (elapsed > animationOffset - 1000) {
-      gp.push();
-      gp.translate(
-        0,
-        gp.height - (padding * 2) + ((padding - Navigation.elementSize) / 2),
-      );
-      const xOffset = xLength / (elements.length + 1);
+    if (elapsed > ANIMATION_OFFSET - 1000) {
       elements.forEach((Component) => {
-        gp.translate(xOffset, 0);
-        const btnGp = Component.drawButton();
-        gp.image(btnGp, 0, 0);
+        Component.drawButton();
       });
-      gp.pop();
     }
   }
 }

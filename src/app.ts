@@ -1,9 +1,10 @@
-import p5 from 'p5';
 import type P5 from 'p5';
 import { createBrowserHistory } from 'history';
 
 import { GpContext } from './utils';
 import { getCurrentPageInstance } from './router';
+import { Cursor, Layout } from './_elements';
+import { Element } from './_elements/_utils';
 
 const history = createBrowserHistory();
 let unlisten = [];
@@ -23,32 +24,40 @@ export default (p: P5) => {
   };
 
   const gpContext: GpContext = {};
+  let cursor: Element;
+  let appBar: Element;
   let PageInstance: ReturnType<typeof getCurrentPageInstance>;
   p.setup = async () => {
     p.pixelDensity(3.0);
-  
+
     // init 2d context
     gpContext.gp2d = p.createGraphics(p.windowWidth, p.windowHeight);
-    gpContext.gpTest = p.createGraphics(logoImg.width, logoImg.height);
+    // gpContext.gpTest = p.createGraphics(logoImg.width, logoImg.height);
 
-    const { gp2d, gpTest } = gpContext;
-    gp2d.id('ctx2d');
-    gp2d.background(bgImg);
-    gp2d.show();
 
-    gpTest.id('ctxTest');
-    gpTest.background(logoImg);
-  
+    PageInstance = getCurrentPageInstance(p, gpContext, history);
+    unlisten.push(history.listen(() => {
+      PageInstance = getCurrentPageInstance(p, gpContext, history);
+    }));
+
     // init 3d context
     const canvas = p.createCanvas(p.windowWidth, p.windowHeight, p.WEBGL);
     canvas.id('ctx3d');
+  
+    // const { gp2d } = gpContext;
+    // gp2d.id('ctx2d');
+    // gp2d.clear();
+
+    // gp2d.show();
+
+    // gpTest.id('ctxTest');
+    // gpTest.background(logoImg);
+  
     // p.createCamera();
 
-  
-    // PageInstance = getCurrentPageInstance(p, gpContext, history);
-    // unlisten.push(history.listen(() => {
-    //   PageInstance = getCurrentPageInstance(p, gpContext, history);
-    // }));
+    const args = [p, gpContext, history] as const;
+    cursor = new Cursor(...args);
+    appBar = new Layout.AppBar(...args);
 
     // warn
     Object.keys(gpContext).forEach(key => {
@@ -58,23 +67,27 @@ export default (p: P5) => {
 
   p.windowResized = () => {
     p.resizeCanvas(p.windowWidth, p.windowHeight);
-    // const _gp2d = p.createGraphics(p.windowWidth, p.windowHeight);
-    // _gp2d.id('canvas2d');
-    // _gp2d.image(gpContext['2d'], 0, 0, _gp2d.width, _gp2d.height);
-    // gpContext['2d'] = _gp2d;
+    gpContext.gp2d.resizeCanvas(p.windowWidth, p.windowHeight);
   };
 
   p.draw = () => {
     // Draw 2d
-    // if(PageInstance.draw2d) PageInstance.draw2d();
+    const { gp2d, gpTest } = gpContext;
 
-    // gpContext['2d'].background(bgImg);
-    // p.imageMode(p.CENTER);
-    // p.image(gpContext['2d'], 0, 0);
-    // // @ts-ignore
-    // p._renderer.GL.clear(p._renderer.GL.DEPTH_BUFFER_BIT);
+    gp2d.background(bgImg);
 
-    // // Draw 3d
+    cursor.draw();
+    appBar.draw();
+
+    if(PageInstance.draw2d) PageInstance.draw2d();
+
+    p.imageMode(p.CENTER);
+    p.image(gp2d, 0, 0);
+
+    // @ts-ignore
+    p._renderer.GL.clear(p._renderer.GL.DEPTH_BUFFER_BIT);
+
+    // Draw 3d
     // p.push();
     // const camOffsetX = logoImg.width / 3;
     // p.camera(
@@ -86,7 +99,7 @@ export default (p: P5) => {
 
     // // Draw logo
     // p.noStroke();
-    // p.texture(gpContext['logo']);
+    // p.texture(gpTest);
     // p.plane(logoImg.width, logoImg.height);
 
     // // Draw page
