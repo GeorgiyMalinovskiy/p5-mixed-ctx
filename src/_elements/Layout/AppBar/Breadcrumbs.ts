@@ -39,7 +39,6 @@ class Breadcrumbs extends ElementComponent {
         gp2d.line(PADDING, yOffset, xLength, yOffset);
       }
 
-
       gp2d.push();
       gp2d.imageMode(gp2d.CENTER);
       gp2d.image(

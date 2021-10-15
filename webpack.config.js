@@ -6,8 +6,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
 
-// TODO Add eslint
-
 const { PWD, NODE_ENV } = process.env;
 const isProduction = process.env.NODE_ENV == 'production';
 
