@@ -7,17 +7,17 @@ import { Cursor, Layout } from './_elements';
 import { Element } from './_elements/_utils';
 
 const history = createBrowserHistory();
-let unlisten = [];
+const unlisten = [];
 
 export default (p: P5) => {
-  let font: P5.Font;
-  let textGp: P5.Graphics;
+  // let font: P5.Font;
+  // let textGp: P5.Graphics;
 
   let bgImg: P5.Image;
-  let logoImg: P5.Image;
+  // let logoImg: P5.Image;
   p.preload = () => {
     bgImg = p.loadImage('./assets/bg-nf-chalk.jpg');
-    logoImg = p.loadImage('./assets/logo-c.svg');
+    // logoImg = p.loadImage('./assets/logo-c.svg');
 
     // font = p.loadFont('./assets/AltmannGrotesk-Regular.otf');
     // textGp = p.createGraphics(300, 100)
@@ -34,7 +34,6 @@ export default (p: P5) => {
     gpContext.gp2d = p.createGraphics(p.windowWidth, p.windowHeight);
     // gpContext.gpTest = p.createGraphics(logoImg.width, logoImg.height);
 
-
     PageInstance = getCurrentPageInstance(p, gpContext, history);
     unlisten.push(history.listen(() => {
       PageInstance = getCurrentPageInstance(p, gpContext, history);
@@ -43,7 +42,7 @@ export default (p: P5) => {
     // init 3d context
     const canvas = p.createCanvas(p.windowWidth, p.windowHeight, p.WEBGL);
     canvas.id('ctx3d');
-  
+
     // const { gp2d } = gpContext;
     // gp2d.id('ctx2d');
     // gp2d.clear();
@@ -52,7 +51,7 @@ export default (p: P5) => {
 
     // gpTest.id('ctxTest');
     // gpTest.background(logoImg);
-  
+
     // p.createCamera();
 
     const args = [p, gpContext, history] as const;
@@ -60,7 +59,7 @@ export default (p: P5) => {
     appBar = new Layout.AppBar(...args);
 
     // warn
-    Object.keys(gpContext).forEach(key => {
+    Object.keys(gpContext).forEach((key) => {
       if (/(test|temp)/.test(key.toLowerCase())) console.warn(`Don't forget to remove "${key}" context.`);
     });
   };
@@ -72,14 +71,14 @@ export default (p: P5) => {
 
   p.draw = () => {
     // Draw 2d
-    const { gp2d, gpTest } = gpContext;
+    const { gp2d } = gpContext;
 
     gp2d.background(bgImg);
 
     cursor.draw();
     appBar.draw();
 
-    if(PageInstance.draw2d) PageInstance.draw2d();
+    if (PageInstance.draw2d) PageInstance.draw2d();
 
     p.imageMode(p.CENTER);
     p.image(gp2d, 0, 0);

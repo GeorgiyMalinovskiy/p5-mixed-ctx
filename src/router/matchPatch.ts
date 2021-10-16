@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-import { pathToRegexp } from "path-to-regexp";
+import { pathToRegexp } from 'path-to-regexp';
 
 const cache = {};
 const cacheLimit = 10000;
@@ -28,7 +28,7 @@ function compilePath(path, options) {
  * Public API for matching a URL pathname to a path.
  */
 function matchPath(pathname, options = {}) {
-  if (typeof options === "string" || Array.isArray(options)) {
+  if (typeof options === 'string' || Array.isArray(options)) {
     options = { path: options };
   }
 
@@ -37,7 +37,7 @@ function matchPath(pathname, options = {}) {
   const paths = [].concat(path);
 
   return paths.reduce((matched, path) => {
-    if (!path && path !== "") return null;
+    if (!path && path !== '') return null;
     if (matched) return matched;
 
     const { regexp, keys } = compilePath(path, {
@@ -56,7 +56,7 @@ function matchPath(pathname, options = {}) {
 
     return {
       path, // the path used to match
-      url: path === "/" && url === "" ? "/" : url, // the matched portion of the URL
+      url: path === '/' && url === '' ? '/' : url, // the matched portion of the URL
       isExact, // whether or not we matched exactly
       params: keys.reduce((memo, key, index) => {
         memo[key.name] = values[index];

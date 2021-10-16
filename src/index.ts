@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-expressions, new-cap */
+
 const init = async () => {
   // TODO refactor styles
   document.body.style.padding = '0',
