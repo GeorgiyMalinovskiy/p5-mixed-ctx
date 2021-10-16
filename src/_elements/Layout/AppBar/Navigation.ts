@@ -2,18 +2,21 @@ import * as domains from '../../../_domains';
 import { PageStatic } from '../../../_domains/_utils';
 import generatePath from '../../../router/generatePath';
 
-import { ElementComponent, implementsElement } from '../../_utils';
+import { implementsElement } from '../../_utils';
+import ElementComponent from '../../_utils/ElementComponent';
 
 import { PADDING, ANIMATION_OFFSET } from './constants';
 
 @implementsElement()
 class Navigation extends ElementComponent {
   static elementSize = 20;
+
   elements: PageStatic[];
+
   constructor(...args: ConstructorParameters<typeof ElementComponent>) {
     super(...args);
 
-    const [p, { gp2d }] = args;
+    const [p] = args;
     const { elementSize } = Navigation;
     this.elements = Object.values(domains).reduce((acc, Component, i, arr) => {
       const gp = p.createGraphics(elementSize, elementSize);
@@ -34,20 +37,29 @@ class Navigation extends ElementComponent {
       return acc;
     }, []);
   }
+
   getNavFxn(pathname: string) {
     this.history.push(pathname);
   }
+
   draw(xLength: number) {
     const { p, gpContext: { gp2d }, elements } = this;
     const elapsed = p.millis();
 
     // horizontal frame
-    let yOffset =  gp2d.height - PADDING * 2;
+    let yOffset = gp2d.height - PADDING * 2;
     if (elapsed > ANIMATION_OFFSET - 1000) {
-      yOffset = gp2d.height - p.map(ANIMATION_OFFSET - elapsed, 0, 1000, PADDING * 2, PADDING, true);
+      yOffset = gp2d.height - p.map(
+        ANIMATION_OFFSET - elapsed,
+        0,
+        1000,
+        PADDING * 2,
+        PADDING,
+        true,
+      );
       gp2d.line(PADDING, yOffset, xLength, yOffset);
     }
-  
+
     // buttons
     if (elapsed > ANIMATION_OFFSET - 1000) {
       elements.forEach((Component) => {

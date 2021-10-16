@@ -1,22 +1,25 @@
 import type P5 from 'p5';
 
-import { ElementComponent, implementsElement } from '../../_utils';
+import { implementsElement } from '../../_utils';
+import ElementComponent from '../../_utils/ElementComponent';
 import { PADDING, ANIMATION_OFFSET } from './constants';
 
 @implementsElement()
 class Breadcrumbs extends ElementComponent {
   static textHeight = 20;
+
   textSVG?: P5.Image;
 
   constructor(...args: ConstructorParameters<typeof ElementComponent>) {
     super(...args);
-    const [p, { gp2d }] = args;
+    const [, { gp2d }] = args;
 
     gp2d.loadImage(
       '../assets/title.svg',
-      image => { this.textSVG = image; },
+      (image) => { this.textSVG = image; },
     );
   }
+
   draw(xLength: number) {
     const { p, gpContext: { gp2d }, textSVG } = this;
     const elapsed = p.millis();
@@ -25,7 +28,7 @@ class Breadcrumbs extends ElementComponent {
       let syOffset;
       switch (true) {
         case elapsed > ANIMATION_OFFSET - 1000:
-          syOffset = p.map(ANIMATION_OFFSET - elapsed, 1000, 0, PADDING, 0, true)
+          syOffset = p.map(ANIMATION_OFFSET - elapsed, 1000, 0, PADDING, 0, true);
           break;
         case elapsed > ANIMATION_OFFSET:
           syOffset = 0;

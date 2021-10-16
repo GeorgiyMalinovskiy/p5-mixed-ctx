@@ -28,13 +28,18 @@ function compilePath(path, options) {
  * Public API for matching a URL pathname to a path.
  */
 function matchPath(pathname, options = {}) {
-  if (typeof options === 'string' || Array.isArray(options)) {
-    options = { path: options };
-  }
+  const {
+    path: basePath,
+    exact = false,
+    strict = false,
+    sensitive = false,
+  } = (
+    typeof options === 'string' || Array.isArray(options)
+      ? { path: options }
+      : options
+  );
 
-  const { path, exact = false, strict = false, sensitive = false } = options;
-
-  const paths = [].concat(path);
+  const paths = [].concat(basePath);
 
   return paths.reduce((matched, path) => {
     if (!path && path !== '') return null;
@@ -43,7 +48,7 @@ function matchPath(pathname, options = {}) {
     const { regexp, keys } = compilePath(path, {
       end: exact,
       strict,
-      sensitive
+      sensitive,
     });
     const match = regexp.exec(pathname);
 
@@ -61,7 +66,7 @@ function matchPath(pathname, options = {}) {
       params: keys.reduce((memo, key, index) => {
         memo[key.name] = values[index];
         return memo;
-      }, {})
+      }, {}),
     };
   }, null);
 }

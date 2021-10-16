@@ -1,14 +1,17 @@
 import { isEmpty, set } from 'lodash/fp';
 
-import { Layout, Cursor } from '../../_elements';
 import { Page, PageStatic } from '.';
 
 const initState = {};
 abstract class PageComponent implements Page {
   p: Page['p'];
+
   gpContext: Page['gpContext'];
+
   history: Page['history'];
+
   state: Page['state'];
+
   constructor(...args: ConstructorParameters<PageStatic>) {
     const [p, gpContext, history] = args;
     this.p = p;
@@ -16,6 +19,7 @@ abstract class PageComponent implements Page {
     this.history = history;
     this.state = initState;
   }
+
   setState(...args: Parameters<Page['setState']>) {
     const [path, value] = args;
     if (path && !!value) {
@@ -25,8 +29,8 @@ abstract class PageComponent implements Page {
 
     return this.state;
   }
-  draw2d() {
-  }
+
+  // draw2d() {}
 }
 
 export default PageComponent;

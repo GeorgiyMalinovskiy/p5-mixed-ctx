@@ -2,8 +2,6 @@ import type P5 from 'p5';
 import { BrowserHistory } from 'history';
 import { GpContext } from '../../utils';
 
-export { default as ElementComponent } from './ElementComponent';
-
 export type State = Record<string, unknown>;
 export interface Element {
   p: P5;
@@ -16,15 +14,15 @@ export interface Element {
 
 export interface ElementStatic {
   new(
-    p: P5, 
+    p: P5,
     gpContext: GpContext,
     history: BrowserHistory,
   ): Element;
 }
 
-export type ElementInstance = InstanceType<Element & ElementStatic>; 
+export type ElementInstance = InstanceType<Element & ElementStatic>;
 
 export function implementsElement() {
-  return <U extends ElementStatic>(constructor: U) => { constructor };
+  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+  return <U extends ElementStatic>(constructor: U) => { constructor; };
 }
-

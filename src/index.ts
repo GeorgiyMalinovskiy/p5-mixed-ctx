@@ -2,7 +2,7 @@
 
 const init = async () => {
   // TODO refactor styles
-  document.body.style.padding = '0',
+  document.body.style.padding = '0';
   document.body.style.margin = '0';
   document.body.style.overflow = 'hidden';
   document.body.style.backgroundColor = '#000';

@@ -1,4 +1,5 @@
-import { ElementComponent, implementsElement } from '../../_utils';
+import { implementsElement } from '../../_utils';
+import ElementComponent from '../../_utils/ElementComponent';
 
 import { PADDING, ANIMATION_OFFSET } from './constants';
 import Breadcrumbs from './Breadcrumbs';
@@ -7,21 +8,26 @@ import Navigation from './Navigation';
 @implementsElement()
 class AppBar extends ElementComponent {
   breadcrumbs: InstanceType<typeof Breadcrumbs>;
+
   navigation: InstanceType<typeof Navigation>;
+
   constructor(...args: ConstructorParameters<typeof ElementComponent>) {
     super(...args);
     this.breadcrumbs = new Breadcrumbs(...args);
     this.navigation = new Navigation(...args);
   }
+
   draw() {
-    const { p, gpContext: { gp2d }, breadcrumbs, navigation } = this;
+    const {
+      p, gpContext: { gp2d }, breadcrumbs, navigation,
+    } = this;
     const elapsed = p.millis();
 
     gp2d.stroke(255);
     gp2d.strokeWeight(2);
-    
+
     const shouldAnimate = elapsed <= ANIMATION_OFFSET;
-    
+
     const xOffset = gp2d.width - PADDING;
     const yOffset = gp2d.height - PADDING;
 

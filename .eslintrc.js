@@ -4,7 +4,12 @@ module.exports = {
     es2021: true,
 
   },
-  extends: ['airbnb-base', 'plugin:import/typescript'],
+  extends: [
+    'airbnb-base',
+    'plugin:import/typescript',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
+  ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 13,
@@ -23,14 +28,14 @@ module.exports = {
     ],
     'no-param-reassign': [
       'error',
-      {
-        props: true,
-        ignorePropertyModificationsFor: ['p'],
-      },
+      { props: false },
     ],
     'no-console': ['error', { allow: ['warn', 'error'] }],
     'no-underscore-dangle': 'off',
     'no-new': 'off',
     'no-plusplus': 'off',
+    'no-unused-expressions': 'off',
+    '@typescript-eslint/no-unused-expressions': ['error'],
+    '@typescript-eslint/ban-ts-comment': 'off',
   },
 };

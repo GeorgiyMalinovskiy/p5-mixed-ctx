@@ -3,7 +3,6 @@ import { BrowserHistory } from 'history';
 
 import { GpContext } from '../../utils';
 
-export { default as PageComponent } from './PageComponent';
 export type State = Record<string, unknown>;
 
 export interface Page {
@@ -23,8 +22,9 @@ export interface PageStatic {
   path: string;
 }
 
-export type PageInstance = InstanceType<Page & PageStatic>; 
+export type PageInstance = InstanceType<Page & PageStatic>;
 
 export function implementsPage() {
-  return <U extends PageStatic>(constructor: U) => { constructor };
+  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+  return <U extends PageStatic>(constructor: U) => { constructor; };
 }
