@@ -25,6 +25,5 @@ export interface PageStatic {
 export type PageInstance = InstanceType<Page & PageStatic>;
 
 export function implementsPage() {
-  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-  return <U extends PageStatic>(constructor: U) => { constructor; };
+  return <U extends PageStatic>(constructor: U) => constructor;
 }

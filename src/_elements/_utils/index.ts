@@ -23,6 +23,5 @@ export interface ElementStatic {
 export type ElementInstance = InstanceType<Element & ElementStatic>;
 
 export function implementsElement() {
-  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-  return <U extends ElementStatic>(constructor: U) => { constructor; };
+  return <U extends ElementStatic>(constructor: U) => constructor;
 }
