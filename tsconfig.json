@@ -10,5 +10,5 @@
     "experimentalDecorators": true
   },
   "include": ["src"],
-  "files": ["src/index.ts"]
+  "files": ["src/index.ts", "types/index.d.ts"]
 }

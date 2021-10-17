@@ -2,6 +2,8 @@ import type P5 from 'p5';
 import { BrowserHistory } from 'history';
 import { GpContext } from '../../utils';
 
+export * from './constants';
+
 export type State = Record<string, unknown>;
 export interface Element {
   p: P5;

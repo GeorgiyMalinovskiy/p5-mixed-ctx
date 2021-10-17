@@ -1,4 +1,5 @@
 import type P5 from 'p5';
+import initRendererSVG from 'p5.js-svg';
 import { createBrowserHistory } from 'history';
 
 import { GpContext } from './utils';
@@ -14,11 +15,14 @@ export default (p: P5) => {
   // let textGp: P5.Graphics;
 
   let bgImg: P5.Image;
-  // let logoImg: P5.Image;
+  let logoSVG: P5.Image;
   p.preload = () => {
     bgImg = p.loadImage('./assets/bg-nf-chalk.jpg');
-    // logoImg = p.loadImage('./assets/logo-c.svg');
 
+    console.log(initRendererSVG);
+    const pSVG = initRendererSVG(p);
+    console.log('pSVG', pSVG);
+    // logoSVG = pSVG.loadSVG('./assets/logo-c.svg');
     // font = p.loadFont('./assets/AltmannGrotesk-Regular.otf');
     // textGp = p.createGraphics(300, 100)
   };

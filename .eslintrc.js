@@ -30,7 +30,7 @@ module.exports = {
       'error',
       { props: false },
     ],
-    'no-console': ['error', { allow: ['warn', 'error'] }],
+    'no-console': ['warn', { allow: ['warn', 'error'] }],
     'no-underscore-dangle': 'off',
     'no-new': 'off',
     'no-plusplus': 'off',
